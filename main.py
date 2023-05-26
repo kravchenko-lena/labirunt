@@ -18,8 +18,26 @@ fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 clock = pygame.time.Clock()
 
-level = 1
+class GameSprite(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height, image):
+        super().__init__()
+        self.rect = pygame.Rect(x, y, width, height)
+        self.image = pygame.image.load(file_path(image))
+        self.image = pygame.transform.scale(self.image, (width, height))
 
+    def show(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+walls = pygame.sprite.Group()
+wall1 = GameSprite(100, 100, 5, 300, r"images\bloks.png")
+walls.add(wall1)
+wall2 = GameSprite(200, 400, 300, 5, r"images\bloks.png")
+walls.add(wall2)
+wall3 = GameSprite(500, 100, 300, 5, r"images\bloks.png")
+walls.add(wall3)
+
+
+level = 1
 game = True
 while game:
     for event in pygame.event.get():
@@ -28,6 +46,7 @@ while game:
 
     if level == 1:
         window.blit(fon, (0, 0))
+        walls.draw(window)
 
     clock.tick(FPS)
     pygame.display.update()
