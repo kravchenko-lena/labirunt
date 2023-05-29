@@ -11,7 +11,7 @@ WIN_WIDTH = 900
 WIN_HEIGHT = 600
 FPS = 40
 
-fon = pygame.image.load(file_path(r"images\fon.png"))
+fon = pygame.image.load(file_path(r"labirunt\images\fon.jpg"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
 
