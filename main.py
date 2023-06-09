@@ -28,6 +28,12 @@ class GameSprite(pygame.sprite.Sprite):
     def show(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
+player = GameSprite(80, 400, 100, 100, r"images\mouse.png")
+enemy1 = GameSprite(300, 100, 100, 100, r"images\angry_cat1.png")
+finish = GameSprite(600, 400, 100, 100, r"images\cheese.png")
+
+
+
 walls = pygame.sprite.Group()
 wall1 = GameSprite(60, 50, 12, 400, r"images\bloks.png")
 walls.add(wall1)
@@ -103,6 +109,9 @@ while game:
     if level == 1:
         window.blit(fon, (0, 0))
         walls.draw(window)
+        player.show()
+        enemy1.show()
+        finish.show()
 
     clock.tick(FPS)
     pygame.display.update()
