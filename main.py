@@ -11,14 +11,16 @@ WIN_WIDTH = 900
 WIN_HEIGHT = 600
 FPS = 40
 
+pygame.mixer.music.load(file_path(r"music\fon_music.mp3"))
+pygame.mixer.music.set_volume(0.07)
+pygame.mixer.music.play(-1)
+
 fon = pygame.image.load(file_path(r"images\fon.png"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
-
-image_win = pygame.image.load(file_path(r"images\mouse.png"))
+image_win = pygame.image.load(file_path(r"images\winner.png"))
 image_win = pygame.transform.scale(image_win, (WIN_WIDTH, WIN_HEIGHT))
-image_lose = pygame.image.load(file_path(r"images\fon.png"))
+image_lose = pygame.image.load(file_path(r"images\loser.png"))
 image_lose = pygame.transform.scale(image_lose, (WIN_WIDTH, WIN_HEIGHT))
-
 
 
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
@@ -47,19 +49,25 @@ class Player(GameSprite):
     def update(self):
         if self.speed_x < 0 and self.rect.left > 0 or self.speed_x > 0 and self.rect.right < WIN_WIDTH:
             self.rect.x += self.speed_x
+        walls_touched = pygame.sprite.spritecollide(self, walls, False)
+        if self.speed_x > 0:
+            for wall in walls_touched:
+                self.rect.right = min(self.rect.right, wall.rect.left)
+        if self.speed_x < 0:
+            for wall in walls_touched:
+                self.rect.left = max(self.rect.left, wall.rect.right)
         
         if self.speed_y < 0 and self.rect.top > 0 or self.speed_y > 0 and self.rect.bottom < WIN_HEIGHT:
             self.rect.y += self.speed_y
-
+        walls_touched = pygame.sprite.spritecollide(self, walls, False)
+        if self.speed_y < 0:
+            for wall in  walls_touched:
+                self.rect.top = max(self.rect.top, wall.rect.bottom)
+        if self.speed_y > 0:
+            for wall in  walls_touched:
+                self.rect.bottom = min(self.rect.bottom, wall.rect.top)
     
-        
-
-
-
-
-
-
-player = Player(80, 400, 70,70, r"images\mouse.png", 0, 0)
+player = Player(80, 400, 60,60, r"images\mouse.png", 0, 0)
 enemy1 = GameSprite(300, 100, 70, 70, r"images\angry_cat1.png")
 finish = GameSprite(600, 400, 100, 100, r"images\cheese.png")
 
@@ -173,7 +181,9 @@ while game:
 
         if pygame.sprite.collide_rect(player, finish):
             level = 10
-
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(file_path(r"music\victory_music.mp3"))
+            pygame.mixer.music.play(-1)
     elif level == 10:
         window.blit(image_win, (0, 0))
 
