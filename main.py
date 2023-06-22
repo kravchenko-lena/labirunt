@@ -14,6 +14,12 @@ FPS = 40
 fon = pygame.image.load(file_path(r"images\fon.png"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
+image_win = pygame.image.load(file_path(r"images\mouse.png"))
+image_win = pygame.transform.scale(image_win, (WIN_WIDTH, WIN_HEIGHT))
+image_lose = pygame.image.load(file_path(r"images\fon.png"))
+image_lose = pygame.transform.scale(image_lose, (WIN_WIDTH, WIN_HEIGHT))
+
+
 
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 clock = pygame.time.Clock()
@@ -53,8 +59,8 @@ class Player(GameSprite):
 
 
 
-player = Player(80, 400, 100, 100, r"images\mouse.png", 0, 0)
-enemy1 = GameSprite(300, 100, 100, 100, r"images\angry_cat1.png")
+player = Player(80, 400, 70,70, r"images\mouse.png", 0, 0)
+enemy1 = GameSprite(300, 100, 70, 70, r"images\angry_cat1.png")
 finish = GameSprite(600, 400, 100, 100, r"images\cheese.png")
 
 
@@ -145,9 +151,6 @@ while game:
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     player.speed_y = 5
                 
-
-                
-                
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.speed_x = 0
@@ -167,6 +170,13 @@ while game:
         player.update()
         enemy1.show()
         finish.show()
+
+        if pygame.sprite.collide_rect(player, finish):
+            level = 10
+
+    elif level == 10:
+        window.blit(image_win, (0, 0))
+
 
     clock.tick(FPS)
     pygame.display.update()
