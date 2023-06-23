@@ -68,7 +68,11 @@ class Player(GameSprite):
                 self.rect.bottom = min(self.rect.bottom, wall.rect.top)
     
 player = Player(80, 400, 60,60, r"images\mouse.png", 0, 0)
+
+enemys = pygame.sprite.Group() 
 enemy1 = GameSprite(300, 100, 70, 70, r"images\angry_cat1.png")
+enemys.add(enemy1)
+
 finish = GameSprite(600, 400, 100, 100, r"images\cheese.png")
 
 
@@ -176,7 +180,7 @@ while game:
         walls.draw(window)
         player.show()
         player.update()
-        enemy1.show()
+        enemys.draw(window)
         finish.show()
 
         if pygame.sprite.collide_rect(player, finish):
@@ -184,8 +188,20 @@ while game:
             pygame.mixer.music.stop()
             pygame.mixer.music.load(file_path(r"music\victory_music.mp3"))
             pygame.mixer.music.play(-1)
+
+        if pygame.sprite.spritecollide(player, enemys, False):
+            level = 11
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(file_path(r"music\loser_music.wav"))
+            pygame.mixer.music.play(-1)
+
     elif level == 10:
         window.blit(image_win, (0, 0))
+
+    elif level == 11:
+        window.blit(image_lose, (0, 0))
+
+
 
 
     clock.tick(FPS)
