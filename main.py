@@ -67,13 +67,69 @@ class Player(GameSprite):
             for wall in  walls_touched:
                 self.rect.bottom = min(self.rect.bottom, wall.rect.top)
     
+
+class Enemy(GameSprite):
+    def __init__(self, x, y, width, height, image, direction, min_coord, max_coord, speed):
+        super().__init__(x, y, width, height, image)
+        self.direction = direction
+        self.min_coord = min_coord
+        self.max_coord = max_coord
+        self.speed = speed
+
+        if self.direction == "left":
+            self.image_l = self.image
+            self.image_r = pygame.transform.flip(self.image, True, False)
+        elif self.direction == "right":
+            self.image_r = self.image
+            self.image_l = pygame.transform.flip(self.image, True, False)
+
+
+    def update(self):
+        if self.direction == "left" or self.direction == "right":
+            if self.direction == "left":
+                self.rect.x -= self.speed
+            elif self.direction == "right":
+                self.rect.x += self.speed
+            
+            if self.rect.right >= self.max_coord:
+                self.direction = "left"
+                self.image = self.image_r
+            if self.rect.left <= self.min_coord:
+                self.direction = "right"
+                self.image = self.image_l
+            
+        elif self.direction == "up" or self.direction == "down":
+            if self.direction == "up":
+                self.rect.y -= self.speed
+            elif self.direction == "down":
+                self.rect.y += self.speed
+
+            if self.rect.top <= self.min_coord:
+                self.direction = "down"
+            if self.rect.bottom >= self.max_coord:
+                self.direction = "up"
+
+
+
+         
+
+
+
+
+
 player = Player(80, 400, 60,60, r"images\mouse.png", 0, 0)
 
 enemys = pygame.sprite.Group() 
-enemy1 = GameSprite(300, 100, 70, 70, r"images\angry_cat1.png")
+enemy1 = Enemy(300, 100, 70, 70, r"images\angry_cat1.png", "down", 80, 280, 2)
 enemys.add(enemy1)
+enemy2 = Enemy(100, 300, 70, 70, r"images\angry_cat3.png", "right", 100, 400, 2)
+enemys.add(enemy2)
+enemy3 = Enemy(500, 100, 70, 70, r"images\angry_cat4.png", "left", 500, 700, 2)
+enemys.add(enemy3)
+enemy4 = Enemy(350, 400, 70, 70, r"images\angry_cat2.png", "up", 350, 500, 2)
+enemys.add(enemy4)
 
-finish = GameSprite(600, 400, 100, 100, r"images\cheese.png")
+finish = GameSprite(600, 400, 70, 70, r"images\cheese.png")
 
 
 
@@ -181,6 +237,7 @@ while game:
         player.show()
         player.update()
         enemys.draw(window)
+        enemys.update()
         finish.show()
 
         if pygame.sprite.collide_rect(player, finish):
