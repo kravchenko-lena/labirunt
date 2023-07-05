@@ -16,7 +16,7 @@ pygame.mixer.music.set_volume(0.07)
 pygame.mixer.music.play(-1)
 
 
-music_shoot = pygame.mixer.Sound(file_path(r"music\loser_music.wav"))
+music_shoot = pygame.mixer.Sound(file_path(r"music\shoot_music.wav"))
 music_shoot.set_volume(0.5)
 
 
@@ -134,14 +134,8 @@ class Bullet(GameSprite):
             self.kill()
 
 
-
-         
-
-
-
-
-
-player = Player(80, 400, 60,60, r"images\mouse.png", 0, 0)
+        
+player = Player(80, 400, 50,50, r"images\mouse.png", 0, 0)
 
 enemys = pygame.sprite.Group() 
 enemy1 = Enemy(300, 100, 70, 70, r"images\angry_cat1.png", "down", 80, 250, 2)
