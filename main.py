@@ -10,8 +10,14 @@ def file_path(filename ):
 WIN_WIDTH = 900
 WIN_HEIGHT = 600
 FPS = 40
+YELLOW = (255, 187, 45)
+ORANGE = (255, 61, 19)
+DARK_ORANGE = (255, 104, 18)
+BROWN = (124, 77, 21)
+WHITE = (255, 255, 255)
 
-pygame.mixer.music.load(file_path(r"music\fon_music.mp3"))
+
+pygame.mixer.music.load(file_path(r"music\victory_music.mp3"))
 pygame.mixer.music.set_volume(0.07)
 pygame.mixer.music.play(-1)
 
@@ -133,8 +139,23 @@ class Bullet(GameSprite):
         if self.rect.right >= WIN_WIDTH or self.rect.left <= 0:
             self.kill()
 
+class Button():
+    def __init__(self, x, y, width, height, color1, color2, text, text_color, text_x, text_y):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color1 = color1
+        self.color2 = color2
+        self.color = color1
+        shrift = pygame.font.SysFont("Helvetica", 70)
+        self.text = shrift.render(text, True, text_color)
+        self.text_x = text_x
+        self.text_y = text_y
 
-        
+    def show(self):
+        pygame.draw.rect(window, self.color, self.rect)
+        window.blit(self.text, (self.rect.x + self.text_x, self.rect.y + self.text_y))
+
+
+
 player = Player(80, 400, 50,50, r"images\mouse.png", 0, 0)
 
 enemys = pygame.sprite.Group() 
@@ -217,9 +238,11 @@ wall30 = GameSprite(270, 180, 12, 70, r"images\bloks.png")
 walls.add(wall30)
 
 
+btn_start = Button(300, 300, 300, 100, ORANGE, DARK_ORANGE, "START", WHITE, 60, 10)
+btn_exit = Button(300, 420, 300, 100, ORANGE, DARK_ORANGE, "EXIT", WHITE, 80, 10)
+game_name = pygame.font.SysFont("Arial", 70, 1).render("Лабіринт", True, BROWN) 
 
-
-level = 1
+level = 0
 game = True
 while game:
     for event in pygame.event.get():
@@ -252,8 +275,32 @@ while game:
                     player.speed_y = 0
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     player.speed_y = 0
-                
 
+        elif level == 0:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if btn_start.rect.collidepoint(x, y):
+                    level = 1
+                    pygame.mixer.music.load(file_path(r"music\fon_music.mp3"))
+                    pygame.mixer.music.set_volume(0.07)
+                    pygame.mixer.music.play(-1)
+
+                elif btn_exit.rect.collidepoint(x, y):
+                    game = False
+
+            if event.type == pygame.MOUSEMOTION:
+                x, y = event.pos
+                if btn_start.rect.collidepoint(x, y):
+                    btn_start.color = btn_start.color2
+
+                elif btn_exit.rect.collidepoint(x, y):
+                    btn_exit.color = btn_exit.color2
+
+                else:
+                    btn_start.color = btn_start.color1
+                    btn_exit.color = btn_exit.color1
+                
+    
 
     if level == 1:
         window.blit(fon, (0, 0))
@@ -285,6 +332,13 @@ while game:
 
     elif level == 11:
         window.blit(image_lose, (0, 0))
+
+    elif level == 0:
+        window.fill(YELLOW)
+        btn_start.show()
+        btn_exit.show()
+        window.blit(game_name, (270, 150))
+
 
 
 
