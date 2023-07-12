@@ -17,10 +17,11 @@ BROWN = (124, 77, 21)
 WHITE = (255, 255, 255)
 
 
-pygame.mixer.music.load(file_path(r"music\victory_music.mp3"))
-pygame.mixer.music.set_volume(0.07)
+pygame.mixer.music.load(file_path(r"music\start_music.mp3"))
+pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)
 
+pygame.display.set_icon(pygame.image.load(file_path(r"images\icon.png"))) 
 
 music_shoot = pygame.mixer.Sound(file_path(r"music\shoot_music.wav"))
 music_shoot.set_volume(0.5)
@@ -145,7 +146,7 @@ class Button():
         self.color1 = color1
         self.color2 = color2
         self.color = color1
-        shrift = pygame.font.SysFont("Helvetica", 70)
+        shrift = pygame.font.SysFont("Times New Roman", 70)
         self.text = shrift.render(text, True, text_color)
         self.text_x = text_x
         self.text_y = text_y
@@ -238,9 +239,9 @@ wall30 = GameSprite(270, 180, 12, 70, r"images\bloks.png")
 walls.add(wall30)
 
 
-btn_start = Button(300, 300, 300, 100, ORANGE, DARK_ORANGE, "START", WHITE, 60, 10)
-btn_exit = Button(300, 420, 300, 100, ORANGE, DARK_ORANGE, "EXIT", WHITE, 80, 10)
-game_name = pygame.font.SysFont("Arial", 70, 1).render("Лабіринт", True, BROWN) 
+btn_start = Button(300, 300, 300, 100, ORANGE, DARK_ORANGE, "START", WHITE, 50, 10)
+btn_exit = Button(300, 420, 300, 100, ORANGE, DARK_ORANGE, "EXIT", WHITE, 70, 10)
+game_name = pygame.font.SysFont("Times New Roman", 70, 1).render("KING OF CHEESE", True, WHITE) 
 
 level = 0
 game = True
@@ -282,7 +283,7 @@ while game:
                 if btn_start.rect.collidepoint(x, y):
                     level = 1
                     pygame.mixer.music.load(file_path(r"music\fon_music.mp3"))
-                    pygame.mixer.music.set_volume(0.07)
+                    pygame.mixer.music.set_volume(0.5)
                     pygame.mixer.music.play(-1)
 
                 elif btn_exit.rect.collidepoint(x, y):
@@ -337,7 +338,7 @@ while game:
         window.fill(YELLOW)
         btn_start.show()
         btn_exit.show()
-        window.blit(game_name, (270, 150))
+        window.blit(game_name, (170, 150))
 
 
 
